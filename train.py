@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torchmetrics
 # Huggingface datasets and tokenizers
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from tokenizers import Tokenizer
 from tokenizers.models import WordLevel
 from tokenizers.pre_tokenizers import Whitespace
@@ -141,7 +141,9 @@ def get_or_build_tokenizer(config, ds, lang):
 
 def get_ds(config):
     # It only has the train split, so we divide it overselves
-    ds_raw = load_dataset(f"{config['datasource']}", f"{config['lang_src']}-{config['lang_tgt']}", split='train[:32332]')
+    # ds_raw = load_dataset(f"{config['datasource']}", f"{config['lang_src']}-{config['lang_tgt']}", split='train[:32332]')
+    file_path = './cn_en_dataset'
+    ds_raw = load_from_disk(file_path)
 
     # Build tokenizers
     tokenizer_src = get_or_build_tokenizer(config, ds_raw, config['lang_src'])
